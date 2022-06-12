@@ -116,7 +116,7 @@ const CoinList = () => {
 			</Box>
 			{showSearchTextResult && (
 				<Typography>
-					Find {listOfCoin?.coins.length} {listOfCoin?.coins.total ? 'results' : 'result'} for "
+					Find {listOfCoin?.coins.length} {listOfCoin?.stats.total ? 'results' : 'result'} for "
 					<strong>{search}</strong>"
 				</Typography>
 			)}
