@@ -12,7 +12,8 @@ import PaginationItem from '@mui/material/PaginationItem';
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface Coin {
 	uuid: string;
@@ -63,6 +64,8 @@ const CoinList = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [sortBy, setSortBy] = useState<null | string>();
 	const [search, setSearch] = useState('');
+	const navigate = useNavigate();
+	const [showSearchTextResult, setShowSearchTextResult] = useState(false);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -72,11 +75,13 @@ const CoinList = () => {
 
 	const getCoinList = async () => {
 		try {
+			setShowSearchTextResult(false);
 			setIsLoading(true);
 			window.scrollTo({ top: 0, behavior: 'smooth' });
 			const { data } = await coinAPI.getAll(paramQuerry);
 			setListOfCoin(data);
 			setIsLoading(false);
+			if (search) setShowSearchTextResult(true);
 		} catch (error) {
 			console.log(error);
 		}
@@ -99,29 +104,46 @@ const CoinList = () => {
 		setParamQuerry({ orderBy: sortBy, offset: limitCoinPerQuerry, search: searchValue });
 	};
 
+	const handleSelectCoin = (e: React.MouseEvent, id: String) => {
+		navigate(`/coin-detail/${id}`);
+	};
+
 	return (
 		<>
 			<h2>Market Coin</h2>
 			<Box position='static' mt={2} mb={2} sx={{ display: 'flex', justifyContent: 'center' }}>
 				<SearchBar onSearchCoin={handleSearchCoin} />
 			</Box>
-			<ToggleButtonGroup
-				disabled={isLoading ? true : false}
-				hidden={listOfCoin?.coins ? false : true}
-				color='primary'
-				value={sortBy}
-				exclusive
-				onChange={handleChangeSort}
-				sx={{ float: 'right' }}>
-				<ToggleButton value='price'>Price</ToggleButton>
-				<ToggleButton value='marketCap'>Market cap</ToggleButton>
-				<ToggleButton value='change'>Change</ToggleButton>
-			</ToggleButtonGroup>
+			{showSearchTextResult && (
+				<Typography>
+					Find {listOfCoin?.coins.length} {listOfCoin?.coins.length ? 'results' : 'result'} for "
+					<strong>{search}</strong>"
+				</Typography>
+			)}
+			{listOfCoin?.coins.length && (
+				<ToggleButtonGroup
+					disabled={isLoading ? true : false}
+					color='primary'
+					value={sortBy}
+					exclusive
+					onChange={handleChangeSort}
+					sx={{ float: 'right' }}>
+					<ToggleButton value='price'>Price</ToggleButton>
+					<ToggleButton value='marketCap'>Market cap</ToggleButton>
+					<ToggleButton value='change'>Change</ToggleButton>
+				</ToggleButtonGroup>
+			)}
 			<Box sx={{ flexGrow: 1 }}>
 				<Grid container spacing={{ xs: 1, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 					{!isLoading
 						? listOfCoin?.coins.map((coin: Coin, index) => (
-								<Grid item xs={4} sm={4} md={4} key={coin['uuid']}>
+								<Grid
+									item
+									xs={4}
+									sm={4}
+									md={4}
+									key={coin['uuid']}
+									onClick={(e) => handleSelectCoin(e, coin['uuid'])}>
 									<CoinItem item={coin} />
 								</Grid>
 						  ))
@@ -132,7 +154,7 @@ const CoinList = () => {
 						  ))}
 				</Grid>
 			</Box>
-			{listOfCoin?.coins && (
+			{listOfCoin?.coins.length && (
 				<Box mt={2} mb={2} sx={{ display: 'flex', justifyContent: 'center' }}>
 					<Stack spacing={2}>
 						<Pagination
