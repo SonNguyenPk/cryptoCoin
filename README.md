@@ -7,3 +7,4 @@ Please kindly refer this link to add an extension to enabled CORS in case of you
 https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en-US
 
 Link deploy app: https://crypto-coin-xi.vercel.app/
+
