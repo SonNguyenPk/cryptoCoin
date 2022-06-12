@@ -6,8 +6,8 @@ export const coinAPI = {
 		return axiosClient.get(url, { params });
 	},
 
-	getById(id: string, params: {} | any) {
-		const url: string = `coins/${id}`;
+	getById(id: string, params?: {}) {
+		const url: string = `coin/${id}`;
 		return axiosClient.get(url, { params });
 	},
 };

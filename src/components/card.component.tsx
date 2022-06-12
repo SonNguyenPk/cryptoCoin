@@ -7,6 +7,7 @@ import React from 'react';
 import CallMadeRoundedIcon from '@mui/icons-material/CallMadeRounded';
 import CallReceivedRoundedIcon from '@mui/icons-material/CallReceivedRounded';
 import { pink } from '@mui/material/colors';
+import { Link } from 'react-router-dom';
 interface Coin {
 	uuid: string;
 	symbol: string;

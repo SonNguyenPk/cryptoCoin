@@ -1,10 +1,8 @@
-import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
 import { Container } from '@mui/system';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import CoinItem from './components/card.component';
 import NavigationBar from './components/main-layout.component';
 import CoinDetail from './pages/coin-detail/coin-detail';
 import CoinList from './pages/coin-list/coin-list';
