@@ -1,4 +1,4 @@
-import { CardActionArea, Icon } from '@mui/material';
+import { CardActionArea, Icon, Skeleton, Box } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
@@ -23,39 +23,49 @@ interface Coin {
 	coinrankingUrl: string;
 	'24hVolume': number;
 }
-export default function CoinItem(props: { item: Coin }) {
-	const { item } = props;
+export default function CoinItem(props?: { item?: Coin }) {
+	const item = props?.item || null;
 	return (
-		<Card sx={{ width: 345 }}>
+		<Card sx={{ maxWidth: 345, height: 300 }}>
 			<CardActionArea>
-				<CardMedia
-					sx={{ objectFit: 'contain' }}
-					component='img'
-					height='140'
-					width='140'
-					image={item['iconUrl']}
-					alt={item.symbol}
-				/>
-				<CardContent>
-					<Typography gutterBottom variant='h5' component='div'>
-						{item.name} - {item.symbol}
-					</Typography>
-					<Typography variant='body2' color='text.secondary'>
-						Market capital: {new Intl.NumberFormat().format(item.marketCap)}
-						{new Intl.NumberFormat().format(item.price)}
-					</Typography>
-					<Typography variant='body2' color='text.secondary'>
-						Price: {new Intl.NumberFormat().format(item.price)}
-					</Typography>
-					<Typography variant='body2' color='text.secondary'>
-						The price change: {new Intl.NumberFormat().format(item.change)}{' '}
-						{item.change > 0 ? (
-							<CallMadeRoundedIcon color='primary' />
-						) : (
-							<CallReceivedRoundedIcon sx={{ color: pink[500] }} />
-						)}
-					</Typography>
-				</CardContent>
+				{item ? (
+					<CardMedia
+						sx={{ objectFit: 'contain' }}
+						component='img'
+						height='140'
+						width='140'
+						image={item['iconUrl']}
+						alt={item.symbol}
+					/>
+				) : (
+					<Skeleton variant='rectangular' width={345} height={200} />
+				)}
+				{item ? (
+					<CardContent>
+						<Typography gutterBottom variant='h5' component='div'>
+							{item.name} - {item.symbol}
+						</Typography>
+						<Typography variant='body2' color='text.secondary' whiteSpace='nowrap'>
+							Market capital: <strong>{new Intl.NumberFormat().format(item.marketCap)}</strong>
+						</Typography>
+						<Typography variant='body2' color='text.secondary' whiteSpace='nowrap'>
+							Price: <strong>{new Intl.NumberFormat().format(item.price)}</strong>
+						</Typography>
+						<Typography variant='body2' color='text.secondary' whiteSpace='nowrap'>
+							The price change: <strong>{new Intl.NumberFormat().format(item.change)}</strong>
+							{item.change > 0 ? (
+								<CallMadeRoundedIcon color='primary' />
+							) : (
+								<CallReceivedRoundedIcon sx={{ color: pink[500] }} />
+							)}
+						</Typography>
+					</CardContent>
+				) : (
+					<Box sx={{ pt: 0.5 }}>
+						<Skeleton />
+						<Skeleton width='60%' />
+					</Box>
+				)}
 			</CardActionArea>
 		</Card>
 	);
