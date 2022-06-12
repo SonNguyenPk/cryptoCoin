@@ -6,4 +6,5 @@ To run this app in localHost please make sure you have enabled CORS in your brow
 Please kindly refer this link to add an extension to enabled CORS in case of you are disabled it
 https://chrome.google.com/webstore/detail/allow-cors-access-control/lhobafahddgcelffkeicbaginigeejlf?hl=en-US
 
-Link deploy app:
+Link deploy app: https://crypto-coin-xi.vercel.app/
+
